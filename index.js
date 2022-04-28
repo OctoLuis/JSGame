@@ -31,10 +31,16 @@ collisionMap.forEach((row, i) => {
 })
 
 const image = new Image()
-const playerImage = new Image()
+const playerImageDown = new Image()
+const playerImageUp = new Image()
+const playerImageLeft = new Image()
+const playerImageRight = new Image()
 const foregroundImage = new Image()
 image.src = './images/LoneyTown.png'
-playerImage.src = './images/playerDown.png'
+playerImageDown.src = './images/playerDown.png'
+playerImageUp.src = './images/playerUp.png'
+playerImageLeft.src = './images/playerLeft.png'
+playerImageRight.src = './images/playerRight.png'
 foregroundImage.src='./images/LoneyTownForeground.png'
 
 const player = new Sprite({
@@ -42,9 +48,15 @@ const player = new Sprite({
         x: canvas.width/2 - 192/4/2,
         y: canvas.height/2 - 68/2,
     },
-    image: playerImage,
+    image: playerImageDown,
     frames: {
         max: 4
+    },
+    sprites: {
+        up: playerImageUp,
+        down: playerImageDown,
+        left: playerImageLeft,
+        right: playerImageRight
     }
 })
 
@@ -99,7 +111,10 @@ function animate() {
     player.draw()
     foreground.draw()
     let moving = true
+    player.moving = false
     if (keys.w.pressed && lastKey === 'w') {
+        player.moving = true
+        player.image = player.sprites.up
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
             if (rectangularCollision({
@@ -123,6 +138,8 @@ function animate() {
             })
         }
     } else if (keys.s.pressed && lastKey === 's') {
+        player.moving = true
+        player.image = player.sprites.down
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
             if (rectangularCollision({
@@ -146,6 +163,8 @@ function animate() {
             })
         }
     } else if (keys.a.pressed && lastKey === 'a') {
+        player.moving = true
+        player.image = player.sprites.left
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
             if (rectangularCollision({
@@ -169,6 +188,8 @@ function animate() {
             })
         }
     } else if (keys.d.pressed && lastKey === 'd') {
+        player.moving = true
+        player.image = player.sprites.right
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
             if (rectangularCollision({
