@@ -9,21 +9,6 @@ for (let i = 0; i < collisions.length; i += 70) {
     collisionMap.push(collisions.slice(i, i + 70))
 }
 
-class Boundary {
-    static tile_width = 48
-    static tile_height = 48
-    constructor({position}) {
-        this.position = position
-        this.width = 48
-        this.height = 48
-    }
-
-    draw() {
-        context.fillStyle = 'red'
-        context.fillRect(this.position.x, this.position.y, this.width, this.height)
-    }
-}
-
 const offset = {
     x: -496,
     y: -640
@@ -47,33 +32,10 @@ collisionMap.forEach((row, i) => {
 
 const image = new Image()
 const playerImage = new Image()
+const foregroundImage = new Image()
 image.src = './images/LoneyTown.png'
 playerImage.src = './images/playerDown.png'
-
-class Sprite {
-    constructor({position, velocity, image, frames={max: 1}}) {
-        this.position = position
-        this.image = image
-        this.frames = frames
-        this.image.onload = () => {
-            this.width = this.image.width / this.frames.max
-            this.height = this.image.height
-        }
-    }
-    draw() {
-        context.drawImage(
-            this.image,
-            0,
-            0,
-            this.image.width/this.frames.max,
-            this.image.height,
-            this.position.x,
-            this.position.y,
-            this.image.width/this.frames.max,
-            this.image.height
-        )
-    }
-}
+foregroundImage.src='./images/LoneyTownForeground.png'
 
 const player = new Sprite({
     position: {
@@ -94,6 +56,14 @@ const background = new Sprite({
     image: image
 })
 
+const foreground = new Sprite({
+    position: {
+        x: offset.x,
+        y: offset.y
+    },
+    image: foregroundImage
+})
+
 const keys = {
     a: {
         pressed: false
@@ -109,13 +79,13 @@ const keys = {
     }
 }
 
-const movables = [background, ...boundaries]
+const movables = [background, foreground, ...boundaries]
 
 function rectangularCollision({rect1, rect2}) {
     return (
-        rect1.position.x + rect1.width - 10 >= rect2.position.x &&
-        rect1.position.x + 10 <= rect2.position.x + rect2.width &&
-        rect1.position.y <= rect2.position.y + rect2.height/3 &&
+        rect1.position.x + rect1.width - 6 >= rect2.position.x &&
+        rect1.position.x + 6 <= rect2.position.x + rect2.width &&
+        rect1.position.y <= rect2.position.y + rect2.height/3 - 16 &&
         rect1.position.y + rect1.height >= rect2.position.y
     )
 }
@@ -126,8 +96,8 @@ function animate() {
     boundaries.forEach(boundary => {
         boundary.draw()
     })
-
     player.draw()
+    foreground.draw()
     let moving = true
     if (keys.w.pressed && lastKey === 'w') {
         for (let i = 0; i < boundaries.length; i++) {
