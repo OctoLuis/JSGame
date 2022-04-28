@@ -123,8 +123,13 @@ function rectangularCollision({rect1, rect2}) {
     )
 }
 
+const battle = {
+    initiated: false
+}
+
 function animate() {
-    window.requestAnimationFrame(animate)
+    const animeID = window.requestAnimationFrame(animate)
+    // console.log(animeID)
     background.draw()
     boundaries.forEach(boundary => {
         boundary.draw()
@@ -135,22 +140,48 @@ function animate() {
     player.draw()
     foreground.draw()
 
+    let moving = true
+    player.moving = false
+
+    if (battle.initiated) return
+
+    // Activate Battle:
     if (keys.w.pressed||keys.a.pressed||keys.d.pressed||keys.s.pressed) {
-        // todo: overlapping area calculation
         for (let i = 0; i < battleField.length; i++) {
             const field = battleField[i]
-            if (rectangularCollision({
-                rect1: player,
-                rect2: field
-            })) {
-                console.log('in battle field')
+            const overlappingArea =
+                ((Math.min(player.position.x + player.width, field.position.x + field.width)
+                    - Math.max(player.position.x, field.position.x)) *
+                (Math.min(player.position.y + player.height, field.position.y + field.height)
+                    - Math.max(player.position.y, field.position.y)))
+            if (rectangularCollision({rect1: player, rect2: field})
+                && overlappingArea > (player.width*player.height)/3
+                && Math.random() < 0.008
+             ) {
+                console.log('Activate Battle')
+
+                // De-activate current animation loop
+                window.cancelAnimationFrame(animeID)
+
+                battle.initiated = true
+                gsap.to('#overlapping-div', {
+                    opacity: 1,
+                    repeat: 3,
+                    yoyo: true, // For smooth repeating animation
+                    duration: 0.35,
+                    onComplete() {
+                        gsap.to('#overlapping-div', {
+                            opacity: 1,
+                            duration: 0.35
+                        })
+                        // Activate a new animation loop
+                        animateBattle()
+                    }
+                })
                 break
             }
         }
     }
-
-    let moving = true
-    player.moving = false
 
     if (keys.w.pressed && lastKey === 'w') {
         player.moving = true
@@ -255,6 +286,12 @@ function animate() {
     }
 }
 animate()
+
+function animateBattle() {
+    window.requestAnimationFrame(animateBattle)
+    // console.log('battling animation')
+
+}
 
 let lastKey = ''
 
