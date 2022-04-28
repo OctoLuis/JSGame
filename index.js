@@ -168,14 +168,20 @@ function animate() {
                     opacity: 1,
                     repeat: 3,
                     yoyo: true, // For smooth repeating animation
-                    duration: 0.35,
+                    duration: 0.28,
                     onComplete() {
                         gsap.to('#overlapping-div', {
                             opacity: 1,
-                            duration: 0.35
+                            duration: 0.28,
+                            onComplete() {
+                                // Activate a new animation loop
+                                animateBattle()
+                                gsap.to('#overlapping-div', {
+                                    opacity: 0,
+                                    duration: 0.28
+                                })
+                            }
                         })
-                        // Activate a new animation loop
-                        animateBattle()
                     }
                 })
                 break
@@ -287,10 +293,19 @@ function animate() {
 }
 animate()
 
+const battleBG = new Image()
+battleBG.src = './images/battleBackground.png'
+const battleBGSprite = new Sprite({
+    position: {
+        x: 0,
+        y: 0
+    },
+    image: battleBG
+})
 function animateBattle() {
     window.requestAnimationFrame(animateBattle)
     // console.log('battling animation')
-
+    battleBGSprite.draw()
 }
 
 let lastKey = ''
