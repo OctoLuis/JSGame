@@ -9,6 +9,11 @@ for (let i = 0; i < collisions.length; i += 70) {
     collisionMap.push(collisions.slice(i, i + 70))
 }
 
+const battleFieldMap = []
+for (let i = 0; i < battleFieldData.length; i += 70) {
+    battleFieldMap.push(battleFieldData.slice(i, i + 70))
+}
+
 const offset = {
     x: -496,
     y: -640
@@ -19,6 +24,22 @@ collisionMap.forEach((row, i) => {
     row.forEach((symbol, j) => {
         if (symbol === 1025) {
             boundaries.push(
+                new Boundary({
+                    position: {
+                        x: j * Boundary.tile_width + offset.x,
+                        y: i * Boundary.tile_height + offset.y
+                    }
+                })
+            )
+        }
+    })
+})
+
+const battleField = []
+battleFieldMap.forEach((row, i) => {
+    row.forEach((symbol, j) => {
+        if (symbol === 1025) {
+            battleField.push(
                 new Boundary({
                     position: {
                         x: j * Boundary.tile_width + offset.x,
@@ -91,7 +112,7 @@ const keys = {
     }
 }
 
-const movables = [background, foreground, ...boundaries]
+const movables = [background, foreground, ...boundaries, ...battleField]
 
 function rectangularCollision({rect1, rect2}) {
     return (
@@ -108,10 +129,29 @@ function animate() {
     boundaries.forEach(boundary => {
         boundary.draw()
     })
+    battleField.forEach(field => {
+        field.draw()
+    })
     player.draw()
     foreground.draw()
+
+    if (keys.w.pressed||keys.a.pressed||keys.d.pressed||keys.s.pressed) {
+        // todo: overlapping area calculation
+        for (let i = 0; i < battleField.length; i++) {
+            const field = battleField[i]
+            if (rectangularCollision({
+                rect1: player,
+                rect2: field
+            })) {
+                console.log('in battle field')
+                break
+            }
+        }
+    }
+
     let moving = true
     player.moving = false
+
     if (keys.w.pressed && lastKey === 'w') {
         player.moving = true
         player.image = player.sprites.up
