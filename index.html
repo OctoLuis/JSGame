@@ -16,6 +16,10 @@
             margin: 0;
             font-size: 16px;
         }
+        h2 {
+            margin: 0;
+            font-size: 16px;
+        }
         button {
             border: 0;
             background-color: white;
@@ -24,6 +28,7 @@
         }
         button:hover {
             background-color: #E3F2F1;
+            color: red;
         }
     </style>
     <title>JavaScript Game</title>
@@ -33,13 +38,33 @@
     <div style="display: inline-block; position: relative;">
         <div id="overlapping-div" style="background-color: black; position: absolute;
         top: 0; right: 0; bottom: 0; left: 0; opacity: 0; pointer-events: none"></div>
+
+        <!-- Health bar for Draggle -->
+        <div style="background-color: white; position: absolute; display: inline-block;
+        width: 250px; top: 50px; left: 50px; border: 6px black solid; padding: 12px">
+            <h2>Draggle</h2>
+            <div style="position: relative">
+                <div style="height: 5px; background-color: #525252; margin-top: 12px"></div>
+                <div style="height: 5px; background-color: greenyellow; position: absolute; width: 100%; top: 0; left: 0; right: 0"></div>
+            </div>
+        </div>
+        <!-- Health bar for Emby -->
+        <div style="background-color: white; position: absolute; display: inline-block;
+        width: 250px; bottom: 190px; right: 50px; border: 6px black solid; padding: 12px">
+            <h2>Emby</h2>
+            <div style="position: relative">
+                <div style="height: 5px; background-color: #525252; margin-top: 12px"></div>
+                <div style="height: 5px; background-color: greenyellow; position: absolute; width: 100%; top: 0; left: 0; right: 0"></div>
+            </div>
+        </div>
+
         <canvas></canvas>
 
         <div style="background-color: white; position: absolute;
         height: 140px; right: 0; bottom: 0; left: 0; border: 6px black solid; display: flex">
             <div style="width: 75%; display: grid; grid-template-columns: repeat(2, 1fr);">
-                <button>Attack</button>
-                <button>Attack</button>
+                <button>Tackle</button>
+                <button>Fireball</button>
             </div>
             <div style="display: flex; align-items: center; justify-content: center; width: 25%; border-left: 6px black solid">
                 <h1>Attack Type</h1>
