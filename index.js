@@ -71,7 +71,8 @@ const player = new Sprite({
     },
     image: playerImageDown,
     frames: {
-        max: 4
+        max: 4,
+        hold: 10
     },
     sprites: {
         up: playerImageUp,
@@ -141,7 +142,7 @@ function animate() {
     foreground.draw()
 
     let moving = true
-    player.moving = false
+    player.animate = false
 
     if (battle.initiated) return
 
@@ -190,7 +191,7 @@ function animate() {
     }
 
     if (keys.w.pressed && lastKey === 'w') {
-        player.moving = true
+        player.animate = true
         player.image = player.sprites.up
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
@@ -215,7 +216,7 @@ function animate() {
             })
         }
     } else if (keys.s.pressed && lastKey === 's') {
-        player.moving = true
+        player.animate = true
         player.image = player.sprites.down
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
@@ -240,7 +241,7 @@ function animate() {
             })
         }
     } else if (keys.a.pressed && lastKey === 'a') {
-        player.moving = true
+        player.animate = true
         player.image = player.sprites.left
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
@@ -265,7 +266,7 @@ function animate() {
             })
         }
     } else if (keys.d.pressed && lastKey === 'd') {
-        player.moving = true
+        player.animate = true
         player.image = player.sprites.right
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
@@ -291,6 +292,7 @@ function animate() {
         }
     }
 }
+// Start animating:
 animate()
 
 const battleBG = new Image()
@@ -302,11 +304,46 @@ const battleBGSprite = new Sprite({
     },
     image: battleBG
 })
+
+const draggleImage = new Image()
+draggleImage.src = "./images/draggleSprite.png"
+const embyImage = new Image()
+embyImage.src = "./images/embySprite.png"
+
+const draggle = new Sprite({
+    position: {
+        x: 800,
+        y: 100
+    },
+    image: draggleImage,
+    frames: {
+        max: 4,
+        hold: 30
+    },
+    animate: true
+})
+
+const emby = new Sprite({
+    position: {
+        x: 280,
+        y: 325
+    },
+    image: embyImage,
+    frames: {
+        max: 4,
+        hold: 30
+    },
+    animate: true
+})
+
 function animateBattle() {
     window.requestAnimationFrame(animateBattle)
     // console.log('battling animation')
     battleBGSprite.draw()
+    draggle.draw()
+    emby.draw()
 }
+// animateBattle()
 
 let lastKey = ''
 
