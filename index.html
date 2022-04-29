@@ -2,18 +2,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Press Start 2P', cursive;
+        }
+        body {
+            background-color: #525252;
+        }
+        h1 {
+            margin: 0;
+            font-size: 16px;
+        }
+        button {
+            border: 0;
+            background-color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #E3F2F1;
+        }
+    </style>
     <title>JavaScript Game</title>
 </head>
-<style>
-    body {
-        background-color: #525252;
-    }
-</style>
+
 <body>
     <div style="display: inline-block; position: relative;">
         <div id="overlapping-div" style="background-color: black; position: absolute;
         top: 0; right: 0; bottom: 0; left: 0; opacity: 0; pointer-events: none"></div>
         <canvas></canvas>
+
+        <div style="background-color: white; position: absolute;
+        height: 140px; right: 0; bottom: 0; left: 0; border: 6px black solid; display: flex">
+            <div style="width: 75%; display: grid; grid-template-columns: repeat(2, 1fr);">
+                <button>Attack</button>
+                <button>Attack</button>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: center; width: 25%; border-left: 6px black solid">
+                <h1>Attack Type</h1>
+            </div>
+        </div>
+
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"
             integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ=="

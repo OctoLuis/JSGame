@@ -293,7 +293,7 @@ function animate() {
     }
 }
 // Start animating:
-animate()
+// animate()
 
 const battleBG = new Image()
 battleBG.src = './images/battleBackground.png'
@@ -343,7 +343,7 @@ function animateBattle() {
     draggle.draw()
     emby.draw()
 }
-// animateBattle()
+animateBattle()
 
 let lastKey = ''
 
